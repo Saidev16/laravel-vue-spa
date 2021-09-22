@@ -10,7 +10,14 @@
                     </div>
                     <div class="form-group">
                         <label>Category</label>
-                        <input type="text" class="form-control" v-model="product.category">
+                        <!-- <input type="text" class="form-control" v-model="product.category"> -->
+                        <select class="form-control mt-3" aria-label="Default select example" v-model="product.category">
+                                <option selected>Open this select menu</option>
+                                <option value="category1">category 1</option>
+                                <option value="category2">category 2</option>
+                                <option value="category3">category 3</option>
+                                <option value="category4">category 4</option>
+                        </select>
                     </div>
                     <div>
                         <label>Quantity</label>

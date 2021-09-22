@@ -5,7 +5,9 @@
 
             <div class="input-group float-right mb-3 d-flex justify-content-end mr-4">
                 <div class="form-outline">
-                    <input type="search" id="form1" class="form-control " placeholder="Search..." v-model="search" />
+                    <input type="search" id="form1" class="form-control " placeholder="Search..." v-model="search"
+                    @keyup="filterMember"
+                     />
                 </div>
             </div>
 
@@ -16,15 +18,24 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Category</th>
+                <th> <select class="form-control  btn-mini " aria-label="Default select example" 
+                     v-model="category" v-on:change="filterMember"
+                >
+                                <option selected value="" >Category</option>
+                                <option value="category1">category 1</option>
+                                <option value="category2">category 2</option>
+                                <option value="category3">category 3</option>
+                                <option value="category4">category 4</option>
+                            </select></th>
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="product in filtredProducts" :key="product.id">
-                <td>{{ product.name }}</td>
+            <tr v-for="product in saveData" :key="product.id">
+                <!-- <td>{{ product.name }}</td> -->
+                <td><router-link :to="{name: 'edit', params: { id: product.id }}" >{{ product.name }}</router-link></td>
                 <td>{{ product.category }}</td>
                 <td>{{ product.quantity }}</td>
                 <td> <a v-bind:href="'/ProductStatus/'+ product.id"  ><button class="btn btn-primary">{{ product.status }} </button></a>  </td>
@@ -47,6 +58,8 @@
             return {
                 products: [],
                 search : "",
+                category:"",
+                saveData : [],
             }
         },
         created() {
@@ -54,16 +67,23 @@
                 .get('http://localhost:8000/api/products/')
                 .then(response => {
                     this.products = response.data;
+                    this.saveData = response.data;
                 });
         },
          computed: {
             filtredProducts() {
-            return this.products.filter((product) =>
+            return this.saveData.filter((product) =>
             {
-                return product.name.match(this.search)
+                console.log('hi')
+               return  this.saveData = product.name.match(this.search);
+
             });
 
-                }
+            },
+            
+
+            
+
         },
         methods: {
             deleteProduct(id) { 
@@ -74,18 +94,47 @@
                         this.products.splice(i, 1)
                     });
             },
-              // Add computed section:
-        computed: {
-            filtredProducts() {
-            return this.products.filter((product) =>
+
+
+        filterMember: function(evt){
+            console.log(this.search);
+            this.saveData = this.products;
+            if( this.search ){
+                this.saveData.filter((product) =>
             {
-                return product.name.match(this.search)
+                var search = this.search;
+                var newData = this.products.filter(function (e){ return e.name == search ;})
+                 console.log(newData);
+
             });
+            }
 
-                }
-        }
+            var val = evt.target.value;
 
-        } 
+            if (val == '') {
+                this.saveData = this.products;
+
+            } else if(val){ 
+                this.saveData = this.products.filter(function (e){ return e.category == val;})
+
+            }
+        }    
+    
+
+
+
+
+
+
+        } ,
         
     }
 </script>
+
+<style>
+.btn-mini {
+    width: 120px;
+}
+
+
+</style>
