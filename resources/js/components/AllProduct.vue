@@ -1,6 +1,16 @@
 <template>
     <div  >
         <h2 class="text-center">Products List</h2>
+        <div class="row ">
+
+            <div class="input-group float-right mb-3 d-flex justify-content-end mr-4">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control " placeholder="Search..." v-model="search" />
+                </div>
+            </div>
+
+        </div>
+
         <div class="table-responsive">
         <table class="table ">
             <thead>
@@ -13,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="product in products" :key="product.id">
+            <tr v-for="product in filtredProducts" :key="product.id">
                 <td>{{ product.name }}</td>
                 <td>{{ product.category }}</td>
                 <td>{{ product.quantity }}</td>
@@ -35,7 +45,8 @@
     export default {
         data() {
             return {
-                products: []
+                products: [],
+                search : "",
             }
         },
         created() {
@@ -45,6 +56,15 @@
                     this.products = response.data;
                 });
         },
+         computed: {
+            filtredProducts() {
+            return this.products.filter((product) =>
+            {
+                return product.name.match(this.search)
+            });
+
+                }
+        },
         methods: {
             deleteProduct(id) { 
                 this.axios
@@ -53,7 +73,19 @@
                         let i = this.products.map(data => data.id).indexOf(id);
                         this.products.splice(i, 1)
                     });
-            }
+            },
+              // Add computed section:
+        computed: {
+            filtredProducts() {
+            return this.products.filter((product) =>
+            {
+                return product.name.match(this.search)
+            });
+
+                }
         }
+
+        } 
+        
     }
 </script>
