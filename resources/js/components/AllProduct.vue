@@ -97,7 +97,7 @@
 
 
         filterMember: function(evt){
-            console.log(this.search);
+            // console.log(this.search);
             this.saveData = this.products;
             if( this.search ){
                 this.saveData.filter((product) =>
@@ -107,7 +107,8 @@
                  console.log(newData);
 
             });
-            }
+
+            };
 
             var val = evt.target.value;
 

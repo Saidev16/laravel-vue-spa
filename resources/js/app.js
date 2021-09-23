@@ -13,6 +13,8 @@ import Vue from 'vue'
  import VueRouter from 'vue-router';
  import axios from 'axios';
  import { routes } from './routes';
+import Vuelidate from 'vuelidate'
+
  
  /**
   * Next, we will create a fresh Vue application instance and attach it to
@@ -22,6 +24,9 @@ import Vue from 'vue'
  
  Vue.use(VueRouter);
  Vue.use(VueAxios, axios);
+ Vue.config.productionTip = false
+Vue.use(Vuelidate);
+
   
  const router = new VueRouter({
      mode: 'history',
